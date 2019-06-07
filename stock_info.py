@@ -1,37 +1,34 @@
 import urllib
 import time
 import sys
-from PyQt4.QtGui import QApplication 
-from PyQt4.QtCore import Qurl 
-from PyQt4.QtWebKit import QwebPage
 
 # from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
-class Client(QwebPage):
-    def __init__(self, url):
-        self.app = QApplication(sys.argv)
-        QwebPage.__init__(self)
-        self.loadFinished.connect(self.on_page_load)
-
-    def on_page_load(self):
-        self.app.quit()
-
+import pandas as pd
 
 class StockItem:
 
     def __init__(self):
         print("init")
         self.input_dir="./output"
-#
-    def run(self, stockItem):
 
-        url = 'https://m.stock.naver.com/item/main.nhn#/stocks/' + stockItem +'/quarter'
+
+    def test(self, stock_item):
+        url = 'https://m.stock.naver.com/item/main.nhn#/stocks/' + stock_item + '/quarter'
         # html = urlopen(url)
-        client_response = Client(url)
-        html = client_response.mainFrame().toHtml()
-        source = BeautifulSoup(html.read(), "html.parser")
-        # 매출액 영업이익 당기순이익 영업이익률 순이익률 ROE 부채비율 당최비율 유보율 EPS BPS 주당배당금 시가배당률 배당성향
-        result = source.find_all("div")
 
-        print(result)
+
+    def get_stock_list(self):
+        df = pd.read_html('http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13', header=0)[0]
+        return df["종목코드"]
+
+
+    def save_financial_statements(self, stock_item):
+        url = 'http://media.kisline.com/highlight/mainHighlight.nice?nav=1&paper_stock=' + stock_item
+        tables = pd.read_html(url)
+        df = tables[4]    #개별IFRS 연간 재무제표
+        print(df)
+
+
+        df.to_excel('output.xlsx')

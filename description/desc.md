@@ -51,3 +51,5 @@ PERxPBR 22보다 적음
 EPS나 ROE, ROA의 경우에는 나는 잘 보지 않음. 지금 재무재표 복습중인데 공부해보고 필요하다 생각이 들면 추가적으로 조건 넣겠음.
 
 
+# 참고 사이트 
+* http://media.kisline.com/highlight/mainHighlight.nice?nav=1&paper_stock=005930

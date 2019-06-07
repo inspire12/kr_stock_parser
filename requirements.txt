@@ -1,4 +1,6 @@
 requests
 bs4
 selenium
-pyqt
+pandas
+lxml
+openpyxl

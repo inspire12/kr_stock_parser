@@ -1,15 +1,21 @@
-from per_all import GetAllByMarketCapitalization
 from stock_info import StockItem
 print("start")
 # print (parser.run("005930"))
 # pers = GetAllByMarketCapitalization.get_stock())
 
-pers = ['005930']
-stock_item = StockItem()
-for per in pers:
-    stock_item.run(per)
+
+def run():
+    stock_parser = StockItem()
+    stock_list = stock_parser.get_stock_list()
+
+    for stock in stock_list:
+        stock = str(stock).zfill(6)
+        print(stock)
+        stock_parser.save_financial_statements(stock_item=stock)
 
 
+
+run()
 # from selenium import webdriver
 # import time, os
 #
