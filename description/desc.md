@@ -10,12 +10,15 @@ ver 0.0
 이 항목들은 건전한 기업 판단하기 위해서는 필수!
 
 
-## Outline
+## Outline data
 * 시가총액 
-* 주가 
 * PER (계산)
 * ROE 증가율 관한 그래프도 있으면 좋을 것 같다는 생각이 듬. 1년 내에서도 증가하는 추세인지 감소하는 추세인지 그래프를 준다거나, 수치를 주면 훌륭함.
 * 배당률 
+* 주가 
+
+### Outline view
+
 
 
 ver 1.0
@@ -53,3 +56,20 @@ EPS나 ROE, ROA의 경우에는 나는 잘 보지 않음. 지금 재무
 
 # 참고 사이트 
 * http://media.kisline.com/highlight/mainHighlight.nice?nav=1&paper_stock=005930
+* https://minjejeon.github.io/learningstock/2017/09/07/download-krx-ticker-symbols-at-once.html
+
+# 용어
+market_capitalization: '시가총액'
+sales: '매출액(억원)'
+operating_profit: '영업이익(억원)'
+operating_margin: '영업이익율(%)'
+net_income: '당기순이익(억원)'
+net_profit_rate: '순이익율(%)'
+assets: '자산총계(억원)'
+liabilities: '부채총계(억원)'
+capitals: '자본총계(억원)'
+retention_rate: '유보율(%)'
+return_on_equity: 'ROE' ( net_income/assets )
+price_earning_ratio: 'PER' 
+price_book-value_ratio: 'PBR'
+: 'PSR', 13: 'EPS(원)', 14: 'BPS(원)', 15: 'SPS(원)', 16: 'EBITDA(억원)', 17: 'EV/EBITDA'}

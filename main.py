@@ -1,18 +1,42 @@
-from stock_info import StockItem
+from service.stock_info import StockItem
 print("start")
 # print (parser.run("005930"))
 # pers = GetAllByMarketCapitalization.get_stock())
 
 
+# app = Flask(__name__)
+# @app.route('/parser')
+# def run():
+#     stock_parser = StockItem()
+#     stock_list = stock_parser.get_stock_list()
+#
+#     for stock in stock_list:
+#         stock = str(stock).zfill(6)
+#         print(stock)
+#         stock_parser.get_financial_statements(stock_item=stock)
+#         break # test
+#
+# if __name__ == '__main__':
+#     app.run()
+
 def run():
+    view_data = []
+
     stock_parser = StockItem()
     stock_list = stock_parser.get_stock_list()
 
     for stock in stock_list:
         stock = str(stock).zfill(6)
         print(stock)
-        stock_parser.save_financial_statements(stock_item=stock)
+        data = stock_parser.get_financial_statements(stock_item=stock)
+        print(data)
+        view_data.append(data)
+        break # test
 
+    show_table(view_data)
+
+def show_table(view_data):
+    print(view_data)
 
 
 run()

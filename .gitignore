@@ -124,3 +124,5 @@ dmypy.json
 
 .idea/
 .vscode/
+
+private_constants.py
