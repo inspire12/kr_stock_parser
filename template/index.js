@@ -35,7 +35,6 @@ function createTdATag(stock_id, stock_name){
     aTagStock.setAttribute("href", naver_finance_url + stock_id)
     aTagStock.setAttribute("target", "_blank")
     aTagStock.innerText = stock_name
-
     td.appendChild(aTagStock)
     return td
 }
