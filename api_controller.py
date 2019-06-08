@@ -2,6 +2,7 @@ from service.stock_info import StockItem
 import os
 import sys
 import json
+from os import getpid
 from flask import Flask, jsonify, request, make_response, send_from_directory, render_template
 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -59,4 +60,7 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 if __name__ == '__main__':
+    fh=open("application.pid", "w")
+    fh.write(str(getpid()))
+    fh.close()
     app.run(host='0.0.0.0')
