@@ -9,4 +9,4 @@ class Stock:
 
 
     def get_per(self, 시가총액, 당기순이익):
-        return int(시가총액)/ int(당기순이익)
+        return round(int(시가총액)/ int(당기순이익), 3)

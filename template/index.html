@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Table V02</title>
+    <title>Stock Parser</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="template/index.css">
-    <link rel="stylesheet" href="{{ url_for('static',filename='template/index.css') }}" />
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}" />
 
     <!--===============================================================================================-->
 </head>
 <body>
 <section>
     <!--for demo wrap-->
-    <h1>Fixed Table header</h1>
+    <!--<h1>Stock Parser</h1>-->
     <div class="tbl-header">
         <table cellpadding="0" cellspacing="0" border="0">
             <thead>
             <tr>
-                <th>Code</th>
-                <th>Company</th>
-                <th>Price</th>
-                <th>Change</th>
-                <th>Change %</th>
+                <th>종목</th>
+                <th>시가총액</th>
+                <th>PER</th>
+                <th>배당율</th>
+                <th>ROE추세</th>
             </tr>
             </thead>
         </table>
     </div>
     <div class="tbl-content">
         <table cellpadding="0" cellspacing="0" border="0">
-            <tbody>
-            <tr>
-                <td>AAC</td>
-                <td>AUSTRALIAN COMPANY </td>
-                <td>$1.38</td>
-                <td>+2.01</td>
-                <td>-0.36%</td>
-            </tr>
+            <tbody id="table-root">
+            <!--<tr>-->
+                <!--<td>AAC</td>-->
+                <!--<td>AUSTRALIAN COMPANY </td>-->
+                <!--<td>$1.38</td>-->
+                <!--<td>+2.01</td>-->
+                <!--<td>-0.36%</td>-->
+            <!--</tr>-->
 
             </tbody>
         </table>
@@ -50,12 +50,12 @@
     <i>♥</i> by
     <a target="_blank" href="https://codepen.io/nikhil8krishnan">Nikhil Krishnan</a>
 </div>
-<script src="{{url_for('static',filename='template/index.js') }}"></script>
-<script src="./index.js"></script>
+<script src="{{url_for('static',filename='index.js') }}"></script>
 <script>
-    let data = JSON.parser({{view_data|tojson}})
+    let data = JSON.parse({{view_data|tojson}})
     console.dir(data)
-
+    let tableBody = document.getElementById("table-root")
+    appendTable(tableBody, data)
 </script>
 </body>
 </html>

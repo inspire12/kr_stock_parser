@@ -25,17 +25,27 @@ def set_data():
     stock_name_list, stock_list = stock_parser.get_stock_list()
 
     for index, stock_id in enumerate(stock_list):
+        print("progress {0}/{1}".format(index, len(stock_list)))
         stock = str(stock_id).zfill(6)
         print(stock)
         data = stock_parser.get_financial_statements(stock_name = stock_name_list[index], stock_item=stock)
         print(data)
-        view_data.append(data)
-        break # test
+        if data != None:
+            view_data.append(data)
+
+        if index > 10:
+            break
+        # break # test
 
 
 @app.route('/', methods=['GET'])
 def get_data():
     if len(view_data) == 0:
+        # stock_id = 183350
+        # stock_parser = StockItem()
+        # data = stock_parser.get_financial_statements(stock_name = "피에스케이", stock_item=str(stock_id).zfill(6))
+        # if data != None:
+        #     view_data.append(data)
         set_data()
 
     return render_template('index.html', view_data=json.dumps(view_data, default=lambda x: x.__dict__))

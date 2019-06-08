@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import requests
 from model.dto.stock import Stock
-
+import logging
 
 class StockItem:
     def __init__(self):
@@ -13,49 +13,81 @@ class StockItem:
         df = pd.read_html('http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13', header=0)[0]
         return df["회사명"], df["종목코드"]
 
-    def load_financial_statements(self, stock_item):
-        self.get_financial_statements(stock_item=stock_item)
-
     def get_financial_statements(self, stock_name, stock_item):
         naver_url = "https://finance.naver.com/item/main.nhn?code=" + stock_item
         raw_stock_html = requests.get(naver_url)
         html = raw_stock_html.text
         soup = BeautifulSoup(html, 'html.parser')
-        finance_html = soup.select('div.section.cop_analysis div.sub_section')
+        # finance_html = soup.select('div.section.cop_analysis div.sub_section')
         market_capitalization = self._get_market_capitalization(soup)
         shares_count = self._get_shares_count(soup)
         dividend_rate = self._get_dividend_rate(soup)
-        print(market_capitalization)
-        print(shares_count)
-
-        # print(finance_html)
-        url = 'http://media.kisline.com/highlight/mainHighlight.nice?nav=1&paper_stock=' + stock_item
-        tables = pd.read_html(url)
-        df = tables[7]  # 기간 재무재표
-        # test
-        data = self._refine_financial_data(df)
-        roi_list = self._get_roi_list(df)
-        print(roi_list)
-        if self.filter_stock(data[14], market_capitalization=market_capitalization, shares_count=shares_count):
+        bps, net_income, roi_list = self._extract_finanacial_data(stock_item=stock_item)
+        # bps = self._get_sales(soup)
+        # net_income = 0
+        # roi_list = []
+        if self.filter_stock(bps, market_capitalization=market_capitalization, shares_count=shares_count):
             return
         # market_capitalization, net_income, roe_list, dividend_rate):
         return Stock(stock_name=stock_name,
                      stock_id=stock_item,
                      market_capitalization=market_capitalization,
-                     net_income=data[3],
+                     net_income=net_income,
                      roe_list=roi_list,
                      dividend_rate=dividend_rate)
 
+
+    def _extract_finanacial_data(self, stock_item):
+        try:
+            url = 'http://media.kisline.com/highlight/mainHighlight.nice?nav=1&paper_stock=' + stock_item
+            tables = pd.read_html(url)
+            df = tables[7]  # 기간 재무재표
+            data = self._refine_financial_data(df)
+            bps = data[14]
+            net_income = data[3]
+            roi_list = self._get_roi_list(df)
+        except:
+            # test
+            bps=0
+            net_income = 0
+            roi_list =[]
+
+        return bps, net_income, roi_list
+
+
+    # 매출
+    def _get_sales(self, soup):
+        raw_text = soup.find_all("tbody")[2][1][3][0][0]
+
+
+        print(raw_text)
+
+
     def _get_market_capitalization(self, soup):
-        return soup.find('em', id='_market_sum').text.strip().replace(",", "")
+        raw_text = soup.find('em', id='_market_sum').text
+        text = raw_text.strip().replace(",", "").replace("\n","").replace("\t","")
+
+        if "조" in text:
+            targets = text.split("조")
+            return int(targets[0]) * 10000 + int(targets[1])
+
+        return int(soup.find('em', id='_market_sum').text.strip().replace(",", ""))
 
     def _get_shares_count(self, soup):
         raw = soup.find_all("div", {"class": "first"})[0].contents[1]
-        shares_count = raw.contents[7].contents[3].find("em").text.replace(",", "")
+        try:
+            shares_count = raw.contents[7].contents[3].find("em").text.replace(",", "")
+        except:
+            shares_count = 0
+
         return shares_count
 
     def _get_dividend_rate(self, soup):
-        dividend_rate = soup.find("em", {"id": "_dvr"}).contents[0]
+        try:
+            dividend_rate = soup.find("em", {"id": "_dvr"}).contents[0]
+        except:
+            dividend_rate = 0
+
         return dividend_rate
 
     def _get_roi_list(self, df):
@@ -64,10 +96,11 @@ class StockItem:
         dict = {}
 
         for key in keys:
-            print(key[1])
+            # print(key[1])
             roe = data[key][9]  # ROE
             dict[key[1]] = roe
         return dict
+
 
     # * 주당 순 자산 500억이상 bps
     # * 시가총액 1000억 이상
