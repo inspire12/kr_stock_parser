@@ -4,6 +4,7 @@ import sys
 import json
 from os import getpid
 from flask import Flask, jsonify, request, make_response, send_from_directory, render_template
+from flask_cors import CORS
 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 os.environ.update({'ROOT_PATH': ROOT_PATH})
@@ -15,6 +16,12 @@ LOG = model.logger.get_root_logger(os.environ.get(
     'ROOT_LOGGER', 'root'), filename=os.path.join(ROOT_PATH, 'log/output.log'))
 
 app = Flask(__name__, template_folder="template", static_folder="template")
+
+cors = CORS(app, resources={
+  r"/*": {"origin": "*"},
+  r"/api/*": {"origin": "*"},
+})
+
 
 view_data = []
 
