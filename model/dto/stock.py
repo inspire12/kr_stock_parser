@@ -5,6 +5,10 @@ class Stock:
         self.market_capitalization = market_capitalization
         self.per = self.get_per(market_capitalization, net_income)
         self.roe_list = roe_list # list
+        roes = list(roe_list.keys())
+        print(roe_list)
+        print(roes[len(roes)-1])
+        self.roe_trends = float(roe_list[roes[len(roes)-1]]) - float(roe_list[roes[len(roes)-2]])
         self.dividend_rate =dividend_rate
 
 
