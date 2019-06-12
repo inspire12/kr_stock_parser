@@ -53,8 +53,6 @@ def set_data():
         if data != None:
             view_data.append(data)
 
-        if index > 10:
-            break
 
 
 @app.route('/', methods=['GET'])
