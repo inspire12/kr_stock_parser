@@ -18,7 +18,7 @@ LOG = model.logger.get_root_logger(os.environ.get(
 app = Flask(__name__, template_folder="template", static_folder="template")
 
 cors = CORS(app, resources={
-  r"/*": {"origin": "*"},
+  r"/rows/*": {"origin": "*"},
   r"/api/*": {"origin": "*"},
 })
 

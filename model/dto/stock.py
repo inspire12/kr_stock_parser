@@ -8,7 +8,7 @@ class Stock:
         roes = list(roe_list.keys())
         print(roe_list)
         print(roes[len(roes)-1])
-        self.roe_trends = float(roe_list[roes[len(roes)-1]]) - float(roe_list[roes[len(roes)-2]])
+        self.roe_trends = round(float(roe_list[roes[len(roes)-1]]) - float(roe_list[roes[len(roes)-2]]), 2)
         self.dividend_rate =dividend_rate
 
 
