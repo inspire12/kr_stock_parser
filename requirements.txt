@@ -5,5 +5,5 @@ pandas
 lxml
 openpyxl
 PyMySQL
-Flask
-CORS
+flask
+flask_cors
