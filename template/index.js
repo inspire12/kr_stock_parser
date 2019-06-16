@@ -16,7 +16,7 @@ function appendTable(target, data_list){
         let tdMarketCapital = createTd(row.market_capitalization)
         let tdPer = createTd(row.per)
         let tdDividendRate = createTd(row.dividend_rate)
-        let tdRoeList = createTd(make_roi_trend(row.roe_list))
+        let tdRoeList = createTd(row.roe_trends)
 
         tr.append(tdStock)
         tr.append(tdMarketCapital)
@@ -43,7 +43,7 @@ function createTdATag(stock_id, stock_name){
 function make_roi_trend(roi_list){
     let keys = Object.keys(roi_list)
     let range = keys.length
-    return roi_list[keys[range-1]]*1 - roi_list[keys[range-2]]*1
+    return (roi_list[keys[0]]*1 - roi_list[keys[1]]*1).toFixed(2)
 }
 
 

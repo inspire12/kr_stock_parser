@@ -7,4 +7,3 @@ def get_per(시가총액, 당기순이익):
 @staticmethod
 def get_roi(수익, 매출원가):
     return (int(수익) - int(매출원가)) / int(매출원가)
-

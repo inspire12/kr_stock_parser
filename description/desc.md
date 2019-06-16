@@ -58,17 +58,23 @@ EPS나 ROE, ROA의 경우에는 나는 잘 보지 않음. 지금 재무
 * https://minjejeon.github.io/learningstock/2017/09/07/download-krx-ticker-symbols-at-once.html
 
 # 용어
-market_capitalization: '시가총액'
-sales: '매출액(억원)'
-operating_profit: '영업이익(억원)'
-operating_margin: '영업이익율(%)'
-net_income: '당기순이익(억원)'
-net_profit_rate: '순이익율(%)'
-assets: '자산총계(억원)'
-liabilities: '부채총계(억원)'
-capitals: '자본총계(억원)'
-retention_rate: '유보율(%)'
-return_on_equity: 'ROE' ( net_income/assets )
-price_earning_ratio: 'PER' 
-price_book-value_ratio: 'PBR'
-: 'PSR', 13: 'EPS(원)', 14: 'BPS(원)', 15: 'SPS(원)', 16: 'EBITDA(억원)', 17: 'EV/EBITDA'}
+- market_capitalization: '시가총액'
+- sales: '매출액(억원)'
+- operating_profit: '영업이익(억원)'
+- operating_margin: '영업이익율(%)'
+- net_income: '당기순이익(억원)'
+- net_profit_rate: '순이익율(%)'
+- assets: '자산총계(억원)'
+- liabilities: '부채총계(억원)'
+- capitals: '자본총계(억원)'
+- retention_rate: '유보율(%)'
+- return_on_equity: 'ROE' ( net_income/assets )
+- price_earning_ratio: 'PER' 주가 수익률  
+- price_book-value_ratio: 'PBR'
+- price_sales_ratio : PSR 1주당 매출액
+- EPS: 주당 순이익률 
+- bps : BPS 주당 순가치 (기업 순자산 / 발행 주식수)
+- SPS, 16: 'EBITDA(억원)', 17: 'EV/EBITDA'}
+
+
+배당수익률 = 주당배당금 / 현재주가 (배당금이 현재 주가의 몇 퍼센트인지)
