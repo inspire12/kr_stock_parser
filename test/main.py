@@ -28,7 +28,7 @@ def run():
     for stock in stock_list:
         stock = str(stock).zfill(6)
         print(stock)
-        data = stock_parser.get_financial_statements(stock_item=stock)
+        data = stock_parser.make_financial_statements(stock_item=stock)
         print(data)
         view_data.append(data)
         break # test

@@ -2,15 +2,13 @@
 from bs4 import BeautifulSoup
 import pandas as pd
 import requests
-from model.dto.stock import Stock
 import logging
 
-from service import string_utils
-
-
 class StockItem:
+
     def __init__(self):
         print("init")
+
 
     def trim_to_int(self, raw_text):
         return int(raw_text.strip().replace(",", "").replace("\n", "").replace("\t", ""))
@@ -23,32 +21,40 @@ class StockItem:
         df = pd.read_html('http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13', header=0)[0]
         return df["회사명"], df["종목코드"]
 
-    def get_financial_statements(self, stock_name, stock_item):
+    def make_financial_statements(self, stock_name, stock_item):
+        from model.entity.stock import Stock
         naver_url = "https://finance.naver.com/item/main.nhn?code=" + stock_item
-        raw_stock_html = requests.get(naver_url)
-        html = raw_stock_html.text
-        soup = BeautifulSoup(html, 'html.parser')
-        # finance_html = soup.select('div.section.cop_analysis div.sub_section')
-        market_capitalization = self._get_market_capitalization(soup)
-        shares_count = self._get_shares_count(soup)
-        dividend_rate = self._get_dividend_rate(soup)
+
+        try:
+            raw_stock_html = requests.get(naver_url)
+            html = raw_stock_html.text
+            soup = BeautifulSoup(html, 'html.parser')
+            market_capitalization = self._get_market_capitalization(soup)
+            shares_count = self._get_shares_count(soup)
+            dividend_rate = self._get_dividend_rate(soup)
 
         # bps, net_income, roi_list = self._extract_finanacial_data(stock_item=stock_item)
-        try:
             bps, net_income, roe_list = self._get_sales(soup)
-        except:
-            print("parsing fail ", stock_item)
+        except AttributeError as e:
+            logging.warning("parsing fail : "+ stock_item + e)
             return
 
         if self.filter_stock(bps=bps, market_capitalization=market_capitalization, shares_count=shares_count):
             return
         # market_capitalization, net_income, roe_list, dividend_rate):
-        return Stock(stock_name=stock_name,
-                     stock_id=stock_item,
+        roe_trend = round(float(roe_list[len(roe_list)-1]) - float(roe_list[len(roe_list)-2]), 2)
+        print(stock_name, stock_item, market_capitalization,self.get_per(market_capitalization, net_income),  dividend_rate)
+        stock = Stock(name=stock_name,
+                     id=stock_item,
                      market_capitalization=market_capitalization,
-                     net_income=net_income,
-                     roe_list=roe_list,
+                     roe_trend= roe_trend,
+                     per=self.get_per(market_capitalization, net_income),
                      dividend_rate=dividend_rate)
+        return stock
+
+    def get_per(self, 시가총액, 당기순이익):
+        print(시가총액, 당기순이익)
+        return round(int(시가총액)/ int(당기순이익), 3)
 
     # 매출
     def _get_sales(self, soup):
@@ -74,7 +80,11 @@ class StockItem:
         return sales, net_income, roe_list
 
     def _get_market_capitalization(self, soup):
-        raw_text = soup.find('em', id='_market_sum').text
+        try:
+            raw_text = soup.find('em', id='_market_sum').text
+        except AttributeError as e :
+            logging.warning ("parsing error : "+ e)
+            return -1
         text = raw_text.strip().replace(",", "").replace("\n", "").replace("\t", "")
 
         if "조" in text:

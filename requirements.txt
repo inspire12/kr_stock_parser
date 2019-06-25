@@ -7,3 +7,5 @@ openpyxl
 PyMySQL
 flask
 flask_cors
+flask_sqlalchemy
+mysqlclient
